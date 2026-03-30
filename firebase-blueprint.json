@@ -1,0 +1,84 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A premium men's apparel product",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Name of the product" },
+        "description": { "type": "string", "description": "Detailed description" },
+        "category": { "type": "string", "description": "Category of the product" },
+        "price": { "type": "number", "description": "Current price" },
+        "oldPrice": { "type": "number", "description": "Original price if on sale" },
+        "imageUrl": { "type": "string", "description": "URL to the product image" },
+        "sizes": { "type": "array", "items": { "type": "string" }, "description": "Available sizes" },
+        "colors": { "type": "array", "items": { "type": "string" }, "description": "Available colors" },
+        "rating": { "type": "number", "description": "Average rating" },
+        "reviewCount": { "type": "number", "description": "Number of reviews" },
+        "stock": { "type": "number", "description": "Items in stock" },
+        "badge": { "type": "string", "description": "Optional badge like 'New' or 'Sale'" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Creation timestamp" }
+      },
+      "required": ["name", "category", "price", "imageUrl", "sizes", "colors", "stock"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A customer order",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string", "description": "Unique human-readable order ID" },
+        "customerName": { "type": "string", "description": "Full name of the customer" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "phone": { "type": "string", "description": "Phone number" },
+        "address": { "type": "string", "description": "Shipping address" },
+        "city": { "type": "string", "description": "Shipping city" },
+        "pincode": { "type": "string", "description": "Shipping pincode" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "name": { "type": "string" },
+              "price": { "type": "number" },
+              "quantity": { "type": "number" },
+              "size": { "type": "string" },
+              "color": { "type": "string" },
+              "imageUrl": { "type": "string" }
+            }
+          }
+        },
+        "totalAmount": { "type": "number", "description": "Total order amount" },
+        "orderStatus": { "type": "string", "enum": ["Order Placed", "Processing", "Shipped", "Out for Delivery", "Delivered"] },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Order timestamp" }
+      },
+      "required": ["orderId", "customerName", "email", "items", "totalAmount", "orderStatus"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile with roles",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "format": "email", "description": "User email" },
+        "role": { "type": "string", "enum": ["admin", "customer"], "description": "User role" },
+        "displayName": { "type": "string", "description": "User display name" }
+      },
+      "required": ["uid", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Collection of all products"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Collection of all customer orders"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    }
+  }
+}
